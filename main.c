@@ -1,6 +1,7 @@
 #include "dllist.h"
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 
 int main()
 {
@@ -92,21 +93,68 @@ int main()
                 printf("A lista está vazia ou não foi criada.\n");
                 break;
             }
-            printf("Insira o nome do time para consulta: ");
-            scanf("%s", key.nome);
 
-            current = lista->first;
+            int criterioBusca;
+            printf("Escolha o critério de busca:\n");
+            printf("1 - Por nome\n");
+            printf("2 - Por número de vitórias\n");
+            printf("3 - Por pontuação\n");
+            scanf("%d", &criterioBusca);
+
             int found = 0;
-            while (current != NULL)
+            switch (criterioBusca)
             {
-                if (strcmp(current->data->nome, key.nome) == 0)
+            case 1:
+                printf("Insira o nome do time para consulta: ");
+                scanf("%s", key.nome);
+                current = lista->first;
+                while (current != NULL)
                 {
-                    printf("Time encontrado\n");
-                    mostrarTime(current->data);
-                    found = 1;
-                    break;
+                    if (comparaTime(current->data, &key))
+                    {
+                        printf("Time encontrado:\n");
+                        mostrarTime(current->data);
+                        found = 1;
+                        break;
+                    }
+                    current = current->next;
                 }
-                current = current->next;
+                break;
+            case 2:
+                printf("Insira o número de vitórias para consulta: ");
+                scanf("%d", &key.vitorias);
+                current = lista->first;
+                while (current != NULL)
+                {
+                    if (comparaVitorias(current->data, &key))
+                    {
+                        printf("Time encontrado:\n");
+                        mostrarTime(current->data);
+                        found = 1;
+                        break;
+                    }
+                    current = current->next;
+                }
+                break;
+            case 3:
+                printf("Insira a pontuação para consulta: ");
+                scanf("%f", &key.pontuacao);
+                current = lista->first;
+                while (current != NULL)
+                {
+                    if (comparaPontos(current->data, &key))
+                    {
+                        printf("Time encontrado:\n");
+                        mostrarTime(current->data);
+                        found = 1;
+                        break;
+                    }
+                    current = current->next;
+                }
+                break;
+            default:
+                printf("Critério de busca inválido.\n");
+                break;
             }
 
             if (!found)
@@ -114,6 +162,7 @@ int main()
                 printf("Time não encontrado.\n");
             }
             break;
+
         case 6:
             if (lista == NULL || lista->first == NULL)
             {
@@ -175,4 +224,14 @@ void mostrarTime(Time *t)
     {
         printf("Nome: %s, Vitórias: %d, Pontuação: %.2f\n", t->nome, t->vitorias, t->pontuacao);
     }
+}
+
+int comparaVitorias(Time *a, Time *b)
+{
+    return a->vitorias == b->vitorias;
+}
+
+int comparaPontos(Time *a, Time *b)
+{
+    return fabs(a->pontuacao - b->pontuacao) < 0.001;
 }

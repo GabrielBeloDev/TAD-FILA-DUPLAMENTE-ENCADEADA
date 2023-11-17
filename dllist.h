@@ -2,6 +2,7 @@
 #define DLLIST_H
 
 #include <stdlib.h>
+#include <math.h>
 
 typedef struct
 {
@@ -29,5 +30,6 @@ int dllInsertLast(DLList *l, Time *data);
 Time *dllRemoveSpec(DLList *l, Time *key, int (*cmp)(Time *, Time *));
 int comparaTime(Time *a, Time *b);
 void mostrarTime(Time *t);
-
+int comparaVitorias(Time *a, Time *b);
+int comparaPontos(Time *a, Time *b);
 #endif

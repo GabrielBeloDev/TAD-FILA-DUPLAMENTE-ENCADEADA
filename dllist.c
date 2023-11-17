@@ -125,3 +125,17 @@ Time *dllRemoveSpec(DLList *l, Time *key, int (*cmp)(Time *, Time *))
 
     return NULL;
 }
+
+Time *dllFind(DLList *l, Time *key, int (*compare)(Time *, Time *))
+{
+    DLNode *current = l->first;
+    while (current != NULL)
+    {
+        if (compare(current->data, key))
+        {
+            return current->data;
+        }
+        current = current->next;
+    }
+    return NULL;
+}
